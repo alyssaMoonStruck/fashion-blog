@@ -51,14 +51,12 @@ const router = express.Router()
 // INDEX
 // GET /articles
 router.get('/articles', requireToken, (req, res, next) => {
-  console.log(req.user._id)
-  Article.find()
-    .then(articles => {
-      // `articles` will be an array of Mongoose documents
-      // we want to convert each one to a POJO, so we use `.map` to
-      // apply `.toObject` to each one
-      return articles.map(example => example.toObject())
-    })
+  var id = req.user._id;
+  Article
+
+    .where('owner').equals(id)
+    //.find( { owner: req.user._id})
+  .populate('owner')
     // respond with status 200 and JSON of the articles
     .then(articles => res.status(200).json({ articles: articles }))
     // if an error occurs, pass it to the handler
@@ -99,8 +97,8 @@ router.post('/articles', requireToken, (req, res, next) => {
 router.patch('/articles/:id', requireToken, removeBlanks, (req, res, next) => {
   // if the client attempts to change the `owner` property by including a new
   // owner, prevent that by deleting that key/value pair
-  delete req.body.article.owner
-
+  //delete req.body.article.owner
+  if(req.body.article.owner == req.user._id) {
   Article.findById(req.params.id)
     .then(handle404)
     .then(article => {
@@ -115,6 +113,10 @@ router.patch('/articles/:id', requireToken, removeBlanks, (req, res, next) => {
     .then(() => res.sendStatus(204))
     // if an error occurs, pass it to the handler
     .catch(next)
+}
+else {
+  handle404()
+}
 })
 
 // DESTROY
