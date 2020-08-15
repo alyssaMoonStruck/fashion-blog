@@ -2,14 +2,13 @@
 
 ## Important Links
 
-* [Fashion Blog](https://alyssamoonstruck.github.io/fashion-blog-browser/)
-* [Heroku Server](https://floating-beyond-78379.herokuapp.com/)
+* [Fashion Blog Client](https://github.com/alyssaMoonStruck/fashion-blog-browser)
 
 * [Fashion - The New York Times](https://www.nytimes.com/section/fashion)
 * [Vogue Business](https://www.voguebusiness.com/technology)
 
 ## Planning Story
-
+ 
 This will be my first ever front-end and back-end project. This is going to be much different from any project I have ever done before, and I know it will bring new challenges and obstacles for me to overcome throughout the process. I plan to meet every roadblock with an open and problem solving manner of thinking. I plan to use Mongodb as well as Mongoose for the server side of this project to help with communication and make sure I'm hitting the server as I should. For my front-end I plan on using JavaScript, HTML, CSS and Handlebars to help my project function, communicate, look clean and kept organized. I plan of using CRUD to allow my project to GET, POST, PATCH and DELETE on any and all resources. I plan to break down every requirement for this project into modular pieces in order to give myself the best amount of time and productivity to complete this project quickly and efficiently.
 
 ## User Stories
