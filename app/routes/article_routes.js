@@ -19,6 +19,7 @@ const requireOwnership = customErrors.requireOwnership
 // this is middleware that will remove blank fields from `req.body`, e.g.
 // { example: { title: '', text: 'foo' } } -> { example: { text: 'foo' } }
 const removeBlanks = require('../../lib/remove_blank_fields')
+
 // passing this as a second argument to `router.<verb>` will make it
 // so that a token MUST be passed for that route to be available
 // it will also set `req.user`
@@ -27,36 +28,14 @@ const requireToken = passport.authenticate('bearer', { session: false })
 // instantiate a router (mini app that only handles routes)
 const router = express.Router()
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 // INDEX
 // GET /articles
 router.get('/articles', requireToken, (req, res, next) => {
   var id = req.user._id;
   Article
-
-    .where('owner').equals(id)
+    .where('ownerId').equals(id)
     //.find( { owner: req.user._id})
-  .populate('owner')
+  //.populate('ownerid')
     // respond with status 200 and JSON of the articles
     .then(articles => res.status(200).json({ articles: articles }))
     // if an error occurs, pass it to the handler
@@ -79,7 +58,7 @@ router.get('/articles/:id', requireToken, (req, res, next) => {
 // POST /articles
 router.post('/articles', requireToken, (req, res, next) => {
   // set owner of new example to be current user
-  req.body.article.owner = req.user._id
+  req.body.article.ownerId = req.user._id
 
   Article.create(req.body.article)
     // respond to succesful `create` with status 201 and JSON of new "example"
@@ -98,7 +77,10 @@ router.patch('/articles/:id', requireToken, removeBlanks, (req, res, next) => {
   // if the client attempts to change the `owner` property by including a new
   // owner, prevent that by deleting that key/value pair
   //delete req.body.article.owner
-  if(req.body.article.owner == req.user._id) {
+
+  const article = req.body.article;
+
+  if(article.ownerId == req.user._id) {
   Article.findById(req.params.id)
     .then(handle404)
     .then(article => {
